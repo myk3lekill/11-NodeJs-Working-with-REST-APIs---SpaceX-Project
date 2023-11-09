@@ -2,6 +2,9 @@ const request = require('supertest');
 const app = require('../../app');
 const { mongoConnect, mongoDisconnect } = require('../../services/mongo')
 
+//Node API Version Control
+const version = 'v1'
+
 // describe('Test GET /launches', () => {
 //     test('It should respond with 200 success', async () => {
 //         const response = await request(app).get('/launches');
@@ -21,7 +24,7 @@ describe('Launches API', () => {
     describe('Test GET /launches', () => {
         test('It should respond with 200 success', async () => {
             const response = await request(app)
-                .get('/launches')
+                .get(`/${version}/launches`)
                 .expect('Content-Type', /json/)
                 .expect(200);
         });
@@ -50,7 +53,7 @@ describe('Launches API', () => {
 
         test('It sholud respond with 201 created', async () => {
             const response = await request(app)
-                .post('/launches')
+                .post(`/${version}/launches`)
                 .send(completeLaunchData)
                 .expect('Content-Type', /json/)
                 .expect(201);
@@ -67,7 +70,7 @@ describe('Launches API', () => {
         //1. Missing Data
         test('It should catch missing required properties', async() => {
             const response = await request(app)
-                .post('/launches')
+                .post(`/${version}/launches`)
                 .send(launchDataWithoutDate) //try sending missing data
                 .expect('Content-Type', /json/)
                 .expect(400);
@@ -80,7 +83,7 @@ describe('Launches API', () => {
         //2. Invalid Date Case
         test('It should catch invalid dates', async() => {
             const response = await request(app)
-                .post('/launches')
+                .post(`/${version}/launches`)
                 .send(launchDataWithInvalidDate) //try sending wrong data
                 .expect('Content-Type', /json/)
                 .expect(400);
