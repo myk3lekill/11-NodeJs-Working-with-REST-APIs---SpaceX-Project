@@ -70,6 +70,7 @@ async function populateLaunches() {
         console.log(`${launch.flightNumber} ${launch.mission}`)
 
         //TODO: Populate launches collection...
+        await saveLaunch(launch)
 
     }
 }
@@ -125,14 +126,6 @@ async function getAllLaunches() {
 
 //Save Launch to MongoDB
 async function saveLaunch(launch) {
-    //Validation
-    const planet = await planets.findOne({
-        keplerName: launch.target
-    });
-    if(!planet) {
-        throw new Error('No matching planet found!')
-    }
-
     //Update DB
     await launchesDatabase.findOneAndUpdate({
         flightNumber: launch.flightNumber,//Update if flightNumber already exixts
@@ -143,6 +136,14 @@ async function saveLaunch(launch) {
 
 //Implement the Post request with MongoDB
 async function scheduleNewLaunch(launch) {
+    //Validation
+    const planet = await planets.findOne({
+        keplerName: launch.target
+    });
+    if(!planet) {
+        throw new Error('No matching planet found!')
+    }
+
     //1 Increment flightNumber by 1:
     const newFlightNumber = await getLatestFlightNumber() + 1
     //2 Assign a few property by default to the launch Obj:
