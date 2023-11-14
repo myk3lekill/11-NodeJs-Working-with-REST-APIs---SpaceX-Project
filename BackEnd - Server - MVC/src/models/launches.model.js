@@ -30,6 +30,7 @@ async function loadLaunchesData() {
         // Query tested in postman but in conventinal fromat without ""
         query:{},
         options:{
+            pagination: false,
             populate:[
                 {
                     path: 'rocket',
