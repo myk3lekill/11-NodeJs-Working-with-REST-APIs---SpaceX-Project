@@ -1,3 +1,4 @@
+const axios = require('axios');
 const launchesDatabase = require('./launches.mongo');
 const planets = require('./planets.mongo');
 
@@ -20,6 +21,54 @@ const launch = {
 // launches.set(launch.flightNumber, launch);
 // MongoDB save launches method:
 saveLaunch(launch)
+
+const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query';
+
+async function loadLaunchesData() {
+    console.log('Downloading launch data....')
+    const response = await axios.post(SPACEX_API_URL, {
+        // Query tested in postman but in conventinal fromat without ""
+        query:{},
+        options:{
+            populate:[
+                {
+                    path: 'rocket',
+                    select: {
+                        name: 1
+                    }
+                },
+                {
+                    path: 'payloads',
+                    select: {
+                        customers: 1
+                    }
+                }
+            ]
+        }
+    });
+
+    //Map response object to a launch object
+    const launchDocs = response.data.docs;
+    for (const launchDoc of launchDocs) {
+        //Manage customers arryay of array with the array.flatMap()
+        const payloads = launchDoc['payloads'];
+        const customers = payloads.flatMap((payload) => {
+            return payload['customers'];
+        });
+        //launch object
+        const launch = {
+            flightNumber: launchDoc['flight_number'],
+            mission: launchDoc['name'],
+            rocket: launchDoc['rocket']['name'],
+            launchDate: launchDoc['date_local'],
+            upcoming: launchDoc[''],
+            success: launchDoc[''],
+            customers: customers,
+        };
+
+        console.log(`${launch.flightNumber} ${launch.mission}`)
+    }
+}
 
 async function existsLaunchWithId(launchId) {
     //Array Method;
@@ -115,6 +164,7 @@ async function abortLaunchById(launchId) {
 };
 
 module.exports = {
+    loadLaunchesData,
     existsLaunchWithId,
     getAllLaunches,
     //addNewLaunch,
