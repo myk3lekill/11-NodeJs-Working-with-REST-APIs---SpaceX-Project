@@ -1,7 +1,12 @@
 const { getAllLaunches, scheduleNewLaunch, existsLaunchWithId, abortLaunchById } = require('../../models/launches.model');//We have to Destructure launches from module.export object to run
+const { getPagination } = require('../../services/query');
 
 async function httpGetAllLaunches(req, res) {
-   return res.status(200).json(await getAllLaunches())
+    //Pagination Management
+    //console.log(req.query)
+    const { skip, limit } = getPagination(req.query); //pass in the getPAgination func the query params and return skip and limit from the function sourde coede
+    const launches = await getAllLaunches(skip, limit);
+    return res.status(200).json(launches);
 };
 
 async function httpAddNewLaunch(req, res) {
