@@ -8,20 +8,20 @@ const planets = require('./planets.mongo');
 const DEFAULT_FLIGHT_NUMBER = 100
 
 //Launch model and saveLaunch (no more needed after implementign SpaceX API)
-const launch = {
-    flightNumber : 100,
-    mission: 'Kepler Exploration X',
-    rocket: 'Explorer IS1',
-    launchDate: new Date('December 27, 2030'),
-    target: 'Kepler-442 b',
-    customers: ['ZTM', 'NASA'],
-    upcoming: true,
-    success: true,
-};
-// Array save launches method:
-// launches.set(launch.flightNumber, launch);
-// MongoDB save launches method:
-saveLaunch(launch)
+// const launch = {
+//     flightNumber : 100,
+//     mission: 'Kepler Exploration X',
+//     rocket: 'Explorer IS1',
+//     launchDate: new Date('December 27, 2030'),
+//     target: 'Kepler-442 b',
+//     customers: ['ZTM', 'NASA'],
+//     upcoming: true,
+//     success: true,
+// };
+// // Array save launches method:
+// // launches.set(launch.flightNumber, launch);
+// // MongoDB save launches method:
+// saveLaunch(launch)
 
 const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query';
 
