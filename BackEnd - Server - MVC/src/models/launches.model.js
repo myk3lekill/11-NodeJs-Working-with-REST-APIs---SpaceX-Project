@@ -7,6 +7,7 @@ const planets = require('./planets.mongo');
 //let latestFlightNumber = 100
 const DEFAULT_FLIGHT_NUMBER = 100
 
+//Launch model and saveLaunch (no more needed after implementign SpaceX API)
 const launch = {
     flightNumber : 100,
     mission: 'Kepler Exploration X',
@@ -119,6 +120,7 @@ async function getAllLaunches(skip, limit) {
     // return Array.from(launches.values());//launches.values() is an IterableIterator that isn't a valid json format. So we use Array.from() to return an array that is a json format.
     // MongoDB getting launches method:
     return await launchesDatabase.find({}, { '_id':0, '__v':0 })
+    .sort({ flightNumber: 1})
     .skip(skip)
     .limit(limit)
 };
