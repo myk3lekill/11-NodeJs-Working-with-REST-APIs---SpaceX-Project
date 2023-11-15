@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const MONGO_URL = 'mongodb+srv://Myk3le:RrJ63OXQvh2if9B8@cluster0.2cyxg.mongodb.net/?retryWrites=true&w=majority';
+const MONGO_URL = process.env.MONGO_URL;
 
 //Event Emitter for mongodb connection once
 mongoose.connection.once('open', () => {
