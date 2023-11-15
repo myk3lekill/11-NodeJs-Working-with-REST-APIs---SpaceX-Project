@@ -1,5 +1,7 @@
 const mongoose = require("mongoose")
 
+require('dotenv').config();
+
 const MONGO_URL = process.env.MONGO_URL;
 
 //Event Emitter for mongodb connection once
